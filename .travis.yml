@@ -1,5 +1,9 @@
 # from https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
 # FIXME: enable dist-mode
+env:
+  global:
+    - secure: "niAgiL8Cox5VTan8poZCtI+cAg8rOspcYgAn63XnCBhXzUGQfPOs9zqolP82/yYwV2ghP7cCUW2okbwVWhCF2/ONeFTQyDJn3NSEqPO9FFN5gBD8t6KJr4R3p4KZBxaIaAOj1tz/t0QWp5HyP+UGzu4FSX0AVEzAh4gD4MH6/F91018Y5uvR105zRlRfUocRnIR4graPMbca2T+goLpqElXof3cQvo6fcOv3lKGGdekS/zwX4HFKdVejZasBi2VBgscxm09n/GjIKXAgDBrN5+8cQ4fPBn6NbKO8evOjJlCaOkjL1KtAKGAboXyejcpuAE7Q1q3QiC2YLq1X7smLVehbWo2PQqhA4ewCzVZB3YJLmJ4Sfw9A5tOS/jemcxH0y2zCHwrglVF2LvepyWo9gJuOW2obdR1NX9S4GZCaoCmyBTtOlQLI5m0s6guI0A0mJJnRGNClMB4jt8zbYv2QuuW0cdNqt0C4Kt+7We1AKopu8DYmQQ824Flcj63IF/F8syUuWjGZflOAyfqPZ6/86Ta9JCVoYt3KDaXjUdshoBoNZhf65vgAAClBAPtImtu0M9lc860y5yU6+Mnd2daYIlBtCPpeNT/swGt/EbOgLeDjs4h6h7uHhNA7yCGOhT7uaJtT87iDhkZroezVHa0wE19jfMlFgKvb0MfW+8BHkgM="
+
 matrix:
     include:
         - name: "Linux-Py3"
@@ -29,5 +33,15 @@ install:
   - gcc -v
   - g++ -v
 
+addons:
+  coverity_scan:
+    project:
+      name: "chinvib66/daal4py"
+      description: "A Convenient Python API to the Intel® Data Analytics Acceleration Library (Intel® DAAL)"
+    notification_email: chinmayvib@gmail.com
+    build_command: "conda build -c conda-forge -c intel $PYVER --output-folder ./build conda-recipe"
+    branch_pattern: coverity_scan_ci
+
+
 script:
-  - conda build -c conda-forge -c intel $PYVER --output-folder ./ conda-recipe
+  - conda build -c conda-forge -c intel $PYVER --output-folder ./build conda-recipe
